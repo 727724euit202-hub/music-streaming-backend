@@ -49,9 +49,14 @@ public class SongController {
         Song song = new Song();
         song.setTitle(title);
         song.setArtist(artist);
-        song.setAudioUrl("/api/songs/stream/" + fileName);
+        song.setFileName(fileName);
+        song=songService.save(song);
+
+        song.setAudioUrl("api/songs/stream/"+song.getId());
 
         songService.save(song);
+
+
 
         return ResponseEntity.ok("Song uploaded successfully");
     }
@@ -61,13 +66,17 @@ public class SongController {
         return songService.getAllSongs();
     }
 
-    @GetMapping("/stream/{fileName}")
-    public ResponseEntity<Resource> streamSong(@PathVariable String fileName)
+    @GetMapping("/stream/{id}")
+    public ResponseEntity<Resource> streamSong(@PathVariable Long id)
             throws IOException {
 
+        Song song = songService.getSongById(id);
+        String fileName = song.getFileName();
         Path filePath = Paths.get(UPLOAD_DIR + fileName);
         Resource resource = new UrlResource(filePath.toUri());
 
+        String audioUrl = "api/songs/stream/"+song.getId();
+        songService.updateSongPlayCount(audioUrl);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType("audio/mpeg"))
                 .body(resource);

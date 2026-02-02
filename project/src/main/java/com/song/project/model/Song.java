@@ -37,10 +37,13 @@ public class Song {
     private String genre;
     private String language;
 
+    
+    private String fileName;
+
     // duration in seconds
     private Integer duration;
 
-    @Column(nullable = false)
+    @Column(nullable=true)
     private String audioUrl;
 
     private Long playCount = 0L;

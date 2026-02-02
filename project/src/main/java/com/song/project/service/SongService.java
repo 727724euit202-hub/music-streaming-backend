@@ -28,4 +28,11 @@ public class SongService {
         return songRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Song not found"));
     }
+
+    public void updateSongPlayCount(String audioUrl){
+        Song song = songRepository.findByAudioUrl(audioUrl).orElseThrow(()->new RuntimeException("Song not found"));
+
+        song.setPlayCount(song.getPlayCount() + 1);
+        songRepository.save(song);
+    }
 }
