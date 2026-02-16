@@ -1,12 +1,17 @@
 package com.song.project.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -39,6 +44,10 @@ public class Song {
 
     
     private String fileName;
+
+    @ManyToMany(mappedBy = "songs")
+    @JsonIgnore
+    private List<PlayList> playlists=new ArrayList<>();
 
     // duration in seconds
     private Integer duration;
